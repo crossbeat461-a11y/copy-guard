@@ -1,5 +1,3 @@
-import { getLanguage } from "obsidian";
-
 export type UiLang = "ja" | "en" | "de";
 
 function readStoredLanguage(): string {
@@ -8,17 +6,6 @@ function readStoredLanguage(): string {
 	} catch {
 		return "";
 	}
-}
-
-function readAppLanguage(): string {
-	try {
-		if (typeof getLanguage === "function") {
-			return String(getLanguage() || "");
-		}
-	} catch {
-		/* older Obsidian */
-	}
-	return "";
 }
 
 function readSystemLanguage(): string {
@@ -44,21 +31,17 @@ function toUiLang(raw: string): UiLang | null {
 }
 
 /**
- * Prefer an explicit Obsidian language setting.
- * "Match system" often leaves localStorage empty — then use the OS / HTML locale,
+ * Prefer an explicit language setting in localStorage.
+ * "Match system" often leaves that empty — then use HTML lang / OS locale,
  * not English by default (Japanese Macs would otherwise get English UI).
  */
 export function uiLang(): UiLang {
 	const stored = toUiLang(readStoredLanguage());
 	if (stored) return stored;
 
-	const app = toUiLang(readAppLanguage());
-	if (app && app !== "en") return app;
-
 	const system = toUiLang(readSystemLanguage());
 	if (system) return system;
 
-	if (app) return app;
 	return "en";
 }
 

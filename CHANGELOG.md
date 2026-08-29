@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- Keep `minAppVersion` 1.5.0: detect UI language without `getLanguage`
+- Use `Setting.setHeading()` in settings (and related headings)
+
 ## 1.0.0
 
 - Review conflict copies (English / Japanese / German names, Syncthing), empty files, and leftover temp files

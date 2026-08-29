@@ -1,7 +1,7 @@
 {
   "id": "copy-guard",
   "name": "CopyGuard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.5.0",
   "description": "Find sync-conflict copies, empty files, and leftover temp files in the same folder, review them, and move only what you approve into a dedicated trash folder before deleting.",
   "author": "K-Tech Studio",

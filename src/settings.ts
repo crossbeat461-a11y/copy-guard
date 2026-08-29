@@ -66,7 +66,7 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		const settings = this.plugin.settings;
 
-		containerEl.createEl("h2", { text: "CopyGuard" });
+		new Setting(containerEl).setName("CopyGuard").setHeading();
 		containerEl.createEl("p", {
 			text: t(
 				"検出は名前と大きさだけで判定します。削除は2段階です。まずここで移動先の箱を決めてください。",
@@ -95,7 +95,7 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("対象フォルダ", "Folders to scan", "Zu prüfende Ordner") });
+		new Setting(containerEl).setName(t("対象フォルダ", "Folders to scan", "Zu prüfende Ordner")).setHeading();
 
 		new Setting(containerEl)
 			.setName(t("スキャン対象フォルダ", "Scan folders", "Scan-Ordner"))
@@ -135,7 +135,7 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 					})
 			);
 
-		containerEl.createEl("h3", { text: t("競合コピー", "Conflict copies", "Konfliktkopien") });
+		new Setting(containerEl).setName(t("競合コピー", "Conflict copies", "Konfliktkopien")).setHeading();
 
 		new Setting(containerEl)
 			.setName(t("競合コピーを検出する", "Detect conflict copies", "Konfliktkopien erkennen"))
@@ -169,7 +169,9 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 				})
 			);
 
-		containerEl.createEl("h3", { text: t("空ファイル（0バイト）", "Empty files (0 bytes)", "Leere Dateien (0 Byte)") });
+		new Setting(containerEl)
+			.setName(t("空ファイル（0バイト）", "Empty files (0 bytes)", "Leere Dateien (0 Byte)"))
+			.setHeading();
 
 		new Setting(containerEl)
 			.setName(t("空ファイルを検出する", "Detect empty files", "Leere Dateien erkennen"))
@@ -215,7 +217,9 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 				})
 			);
 
-		containerEl.createEl("h3", { text: t("一時・破損ファイル", "Temp / corrupt files", "Temporäre / beschädigte Dateien") });
+		new Setting(containerEl)
+			.setName(t("一時・破損ファイル", "Temp / corrupt files", "Temporäre / beschädigte Dateien"))
+			.setHeading();
 
 		new Setting(containerEl)
 			.setName(t("一時・破損ファイルを検出する", "Detect temp / corrupt files", "Temporäre / beschädigte Dateien erkennen"))
@@ -243,7 +247,9 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 				})
 			);
 
-		containerEl.createEl("h3", { text: t("隔離フォルダの最終削除", "Final delete from quarantine", "Endgültiges Löschen aus der Quarantäne") });
+		new Setting(containerEl)
+			.setName(t("隔離フォルダの最終削除", "Final delete from quarantine", "Endgültiges Löschen aus der Quarantäne"))
+			.setHeading();
 
 		new Setting(containerEl)
 			.setName(t("起動時に確認する", "Ask on startup", "Beim Start nachfragen"))
@@ -280,7 +286,7 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 		const legalWrap = containerEl.createDiv({ cls: "copyguard-legal-settings" });
 		appendLegalBody(legalWrap);
 
-		containerEl.createEl("h3", { text: t("応援", "Support", "Unterstützung") });
+		new Setting(containerEl).setName(t("応援", "Support", "Unterstützung")).setHeading();
 
 		new Setting(containerEl)
 			.setName("Buy Me a Coffee")

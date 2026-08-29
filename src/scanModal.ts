@@ -45,9 +45,9 @@ export class ScanModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass("copyguard-modal");
 
-		contentEl.createEl("h2", {
-			text: t("CopyGuard — 競合コピーの点検", "CopyGuard — review conflict copies", "CopyGuard — Konfliktkopien prüfen"),
-		});
+		new Setting(contentEl)
+			.setName(t("CopyGuard — 競合コピーの点検", "CopyGuard — review conflict copies", "CopyGuard — Konfliktkopien prüfen"))
+			.setHeading();
 		contentEl.createEl("p", {
 			cls: "copyguard-desc",
 			text: t(

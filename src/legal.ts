@@ -2,7 +2,7 @@ import { App, Modal, Setting } from "obsidian";
 import { t } from "./i18n";
 
 export function appendLegalBody(el: HTMLElement): void {
-	el.createEl("h3", { text: t("免責（無保証）", "Disclaimer (no warranty)", "Haftungsausschluss (ohne Gewähr)") });
+	new Setting(el).setName(t("免責（無保証）", "Disclaimer (no warranty)", "Haftungsausschluss (ohne Gewähr)")).setHeading();
 	const disclaimer = [
 		t(
 			"CopyGuard は現状有姿（無保証）で提供します。あらゆる環境での動作を保証しません。ご利用は自己責任です。",
@@ -34,7 +34,7 @@ export function appendLegalBody(el: HTMLElement): void {
 		el.createEl("p", { cls: "copyguard-legal-p", text: para });
 	}
 
-	el.createEl("h3", { text: t("プライバシー", "Privacy", "Datenschutz") });
+	new Setting(el).setName(t("プライバシー", "Privacy", "Datenschutz")).setHeading();
 	const privacy = [
 		t(
 			"CopyGuard は、点検・移動・削除をこの端末の Vault の中だけで行います。利用状況の収集や、外部への送信はありません。",
@@ -62,9 +62,9 @@ export class LegalModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 		contentEl.addClass("copyguard-legal-modal");
-		contentEl.createEl("h2", {
-			text: t("CopyGuard — 免責とプライバシー", "CopyGuard — Disclaimer and privacy", "CopyGuard — Haftung und Datenschutz"),
-		});
+		new Setting(contentEl)
+			.setName(t("CopyGuard — 免責とプライバシー", "CopyGuard — Disclaimer and privacy", "CopyGuard — Haftung und Datenschutz"))
+			.setHeading();
 		appendLegalBody(contentEl);
 
 		new Setting(contentEl).addButton((btn) =>

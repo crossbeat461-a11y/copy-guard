@@ -1,4 +1,4 @@
-import { App, Modal, Notice } from "obsidian";
+import { App, Modal, Notice, Setting } from "obsidian";
 import type CopyGuardPlugin from "./main";
 import { t } from "./i18n";
 import { emptyTrashFolder } from "./scanner";
@@ -17,7 +17,7 @@ export class TrashConfirmModal extends Modal {
 		const { contentEl } = this;
 		contentEl.empty();
 
-		contentEl.createEl("h2", { text: "CopyGuard" });
+		new Setting(contentEl).setName("CopyGuard").setHeading();
 		contentEl.createEl("p", {
 			text: t(
 				`「${this.plugin.settings.trashFolderName}」に ${this.fileCount} 件のファイルがあります。削除しますか？`,
