@@ -288,11 +288,7 @@ export function countTrashFiles(app: App, trashFolderName: string): number {
 	return files.length;
 }
 
-export async function emptyTrashFolder(
-	app: App,
-	trashFolderName: string,
-	useSystemTrash: boolean
-): Promise<number> {
+export async function emptyTrashFolder(app: App, trashFolderName: string): Promise<number> {
 	const folder = getTrashFolder(app, trashFolderName);
 	if (!folder) return 0;
 	const files: TFile[] = [];
@@ -300,7 +296,7 @@ export async function emptyTrashFolder(
 	let deleted = 0;
 	for (const file of files) {
 		try {
-			await app.vault.trash(file, useSystemTrash);
+			await app.fileManager.trashFile(file);
 			deleted++;
 		} catch (e) {
 			console.error("CopyGuard: failed to delete", file.path, e);

@@ -1,6 +1,6 @@
 import { Plugin } from "obsidian";
 import { t } from "./i18n";
-import { CopyGuardSettings, CopyGuardSettingTab, DEFAULT_SETTINGS } from "./settings";
+import { CopyGuardSettings, CopyGuardSettingTab, DEFAULT_SETTINGS, parseSavedSettings } from "./settings";
 import { countTrashFiles } from "./scanner";
 import { ScanModal } from "./scanModal";
 import { TrashConfirmModal } from "./startupModal";
@@ -43,7 +43,8 @@ export default class CopyGuardPlugin extends Plugin {
 	}
 
 	async loadSettings(): Promise<void> {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		const loaded: unknown = await this.loadData();
+		this.settings = { ...DEFAULT_SETTINGS, ...parseSavedSettings(loaded) };
 	}
 
 	async saveSettings(): Promise<void> {

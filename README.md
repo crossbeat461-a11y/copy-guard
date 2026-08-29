@@ -3,7 +3,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/crossbeat461-a11y/copy-guard?style=for-the-badge&display_name=tag)](https://github.com/crossbeat461-a11y/copy-guard/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/crossbeat461-a11y/copy-guard?style=for-the-badge)](LICENSE)
 [![Release](https://img.shields.io/github/actions/workflow/status/crossbeat461-a11y/copy-guard/release.yml?style=for-the-badge&label=Release)](https://github.com/crossbeat461-a11y/copy-guard/actions/workflows/release.yml)
-![App 1.5.0+](https://img.shields.io/badge/App-1.5.0%2B-483699?style=for-the-badge)
+![App 1.8.7+](https://img.shields.io/badge/App-1.8.7%2B-483699?style=for-the-badge)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/k_tech_studio)
 
 **[English](#readme-en)** · **[日本語](#readme-ja)** · **[Deutsch](#readme-de)**

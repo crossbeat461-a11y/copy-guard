@@ -205,7 +205,7 @@ export class ScanModal extends Modal {
 			const items = this.candidates.filter((c) => c.type === type);
 			if (items.length === 0) continue;
 
-			this.resultsEl.createEl("div", {
+			this.resultsEl.createDiv({
 				cls: "copyguard-group-title",
 				text: t(
 					`${typeLabel(type)}（${items.length}件）`,
@@ -233,7 +233,7 @@ export class ScanModal extends Modal {
 		});
 
 		const main = row.createDiv({ cls: "copyguard-item-main" });
-		main.createEl("span", {
+		main.createSpan({
 			cls: `copyguard-badge ${TYPE_BADGE_CLASS[candidate.type]}`,
 			text: typeLabel(candidate.type),
 		});

@@ -63,7 +63,7 @@ export class LegalModal extends Modal {
 		contentEl.empty();
 		contentEl.addClass("copyguard-legal-modal");
 		new Setting(contentEl)
-			.setName(t("CopyGuard — 免責とプライバシー", "CopyGuard — Disclaimer and privacy", "CopyGuard — Haftung und Datenschutz"))
+			.setName(t("免責とプライバシー", "Disclaimer and privacy", "Haftung und Datenschutz"))
 			.setHeading();
 		appendLegalBody(contentEl);
 
