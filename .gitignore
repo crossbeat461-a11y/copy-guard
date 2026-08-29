@@ -1,0 +1,19 @@
+# build
+*.js.map
+node_modules
+/dist
+
+# osx / windows
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+__MACOSX/
+Thumbs.db
+Desktop.ini
+
+# obsidian data (local test vault)
+data.json
+
+.vscode
+.vercel

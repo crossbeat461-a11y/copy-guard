@@ -1,0 +1,152 @@
+.copyguard-modal {
+  width: 100%;
+}
+
+.copyguard-desc {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+  margin-bottom: 0.5em;
+}
+
+.copyguard-scope {
+  margin-bottom: 0.5em;
+}
+
+.copyguard-results {
+  margin-top: 1em;
+  max-height: 45vh;
+  overflow-y: auto;
+  border-top: 1px solid var(--background-modifier-border);
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.copyguard-empty-state {
+  color: var(--text-muted);
+  padding: 1em 0;
+  text-align: center;
+}
+
+.copyguard-group-title {
+  font-weight: var(--font-weight-bold);
+  margin: 0.75em 0 0.25em 0;
+  color: var(--text-normal);
+}
+
+.copyguard-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5em;
+  padding: 0.4em 0.2em;
+  border-bottom: 1px solid var(--background-modifier-border-hover);
+}
+
+.copyguard-item input[type="checkbox"] {
+  margin-top: 0.3em;
+}
+
+.copyguard-item-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.copyguard-item-path {
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-small);
+  word-break: break-all;
+}
+
+.copyguard-item-reason {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+}
+
+.copyguard-badge {
+  display: inline-block;
+  font-size: var(--font-ui-smaller);
+  padding: 0.1em 0.5em;
+  border-radius: 0.8em;
+  margin-right: 0.4em;
+  color: var(--text-on-accent);
+}
+
+.copyguard-badge-conflict {
+  background-color: var(--color-orange, #e07b39);
+}
+
+.copyguard-badge-empty {
+  background-color: var(--color-blue, #3b82c4);
+}
+
+.copyguard-badge-temp {
+  background-color: var(--color-red, #c0392b);
+}
+
+.copyguard-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1em;
+  gap: 0.5em;
+}
+
+.copyguard-footer-info {
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+/* Official Buy Me a Coffee yellow (same as LP / default-yellow.png) */
+.copyguard-bmc-btn,
+button.copyguard-bmc-btn,
+.setting-item-control button.copyguard-bmc-btn {
+  background-color: #ffdd00 !important;
+  color: #000 !important;
+  font-weight: 700;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.copyguard-bmc-btn:hover,
+button.copyguard-bmc-btn:hover {
+  background-color: #f5d000 !important;
+  color: #000 !important;
+}
+
+.copyguard-legal-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5em;
+  margin: 0.5em 0 0.75em;
+  padding: 0.6em 0.75em;
+  border-radius: 6px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.copyguard-legal-warn {
+  flex: 1;
+  min-width: 12em;
+  color: var(--text-muted);
+  font-size: var(--font-ui-small);
+}
+
+.copyguard-legal-bar .setting-item {
+  border: none;
+  padding: 0;
+}
+
+.copyguard-legal-p {
+  font-size: var(--font-ui-small);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0.4em 0 0.8em;
+}
+
+.copyguard-legal-settings h3 {
+  margin-top: 1.2em;
+}
+
+.copyguard-legal-modal .copyguard-legal-p {
+  max-width: 42em;
+}
