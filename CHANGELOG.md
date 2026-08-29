@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- Settings: do not use the plugin name as a heading
+
 ## 1.0.1
 
 - Keep `minAppVersion` 1.5.0: detect UI language without `getLanguage`

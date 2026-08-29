@@ -66,7 +66,6 @@ export class CopyGuardSettingTab extends PluginSettingTab {
 		containerEl.empty();
 		const settings = this.plugin.settings;
 
-		new Setting(containerEl).setName("CopyGuard").setHeading();
 		containerEl.createEl("p", {
 			text: t(
 				"検出は名前と大きさだけで判定します。削除は2段階です。まずここで移動先の箱を決めてください。",

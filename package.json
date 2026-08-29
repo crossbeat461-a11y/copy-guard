@@ -1,6 +1,6 @@
 {
   "name": "copy-guard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Find sync-conflict copies, empty files, and leftover temp files, review them, and move only what you approve into a dedicated trash folder before deleting.",
   "main": "main.js",
   "scripts": {
