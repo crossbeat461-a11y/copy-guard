@@ -21,7 +21,7 @@ Find sync-conflict copies, empty files, and leftover temp files in the same fold
 CopyGuard is a maintenance plugin. It does not delete on its own.
 
 Scan for:
-- Sync conflict copies in the same folder as the original (Dropbox / iCloud / Remotely Save / Sync / Syncthing name patterns; Japanese, English, and German)
+- Sync conflict copies (Dropbox / official Sync / Syncthing / Nextcloud name patterns; several languages). Listed even if the original is missing from the folder
 - Empty (0-byte) files older than a number of days you set
 - Leftover temp files (.tmp, trailing ~, and similar)
 

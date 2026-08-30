@@ -18,7 +18,7 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 
 ### What it does
 
-- Detects conflict copies **in the same folder as the original** (Dropbox / iCloud / Remotely Save / official Sync / Syncthing name patterns; Japanese, English, German)
+- Detects conflict copies (Dropbox / official Sync / Syncthing / Nextcloud name patterns; Japanese, English, German, Korean, Chinese, Spanish, Portuguese). Lists them even if the original is missing.
 - Optional numbered names like `Note 2.md` (off by default — easy to confuse with a real title)
 - Empty (0-byte) files and temp leftovers (`.tmp`, trailing `~`, Office lock files), with a minimum age in days
 - Skips `.icloud` placeholders and files you currently have open

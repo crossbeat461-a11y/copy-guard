@@ -20,35 +20,79 @@ interface ConflictPattern {
 	strip: (basename: string) => string | null;
 }
 
+/** `Note (…keyword…)` / `Note（…keyword…）` — account name may come before the keyword. */
+function stripParenKeyword(basename: string, keyword: RegExp): string | null {
+	const m = basename.match(/^(.*?)[（(]([^）)]*)[）)]\s*$/);
+	if (!m || m[1].trim().length === 0) return null;
+	if (!keyword.test(m[2])) return null;
+	return m[1].trim();
+}
+
 const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "conflicted-copy-en",
 		risky: false,
 		label: () => t("conflictedCopyEn"),
-		strip: (basename) => {
-			const m = basename.match(/^(.*?)\s*\(conflicted copy[^)]*\)\s*$/i);
-			return m && m[1].trim().length > 0 ? m[1].trim() : null;
-		},
+		// Dropbox / Nextcloud EN: `Note (Alice's conflicted copy 2026-08-31)`
+		strip: (basename) => stripParenKeyword(basename, /conflicted copy/i),
 	},
 	{
 		id: "conflicted-copy-ja",
 		risky: false,
 		label: () => t("conflictCopyJa"),
-		strip: (basename) => {
-			const m = basename.match(/^(.*?)[（(]\s*競合コピー[^）)]*[）)]\s*$/);
-			return m && m[1].trim().length > 0 ? m[1].trim() : null;
-		},
+		// Dropbox JA: `Note (Alice の競合コピー 2026-08-31)`
+		strip: (basename) => stripParenKeyword(basename, /競合コピー/),
 	},
 	{
 		id: "conflicted-copy-de",
 		risky: false,
 		label: () => t("conflictCopyDe"),
+		strip: (basename) =>
+			stripParenKeyword(basename, /konfliktkopie|in konflikt stehende kopie/i),
+	},
+	{
+		id: "conflicted-copy-ko",
+		risky: false,
+		label: () => t("conflictCopyKo"),
+		strip: (basename) => stripParenKeyword(basename, /충돌하는 사본|충돌하는 복사본|충돌 복사본/),
+	},
+	{
+		id: "conflicted-copy-zh",
+		risky: false,
+		label: () => t("conflictCopyZh"),
+		strip: (basename) => stripParenKeyword(basename, /冲突的副本|衝突的複本/),
+	},
+	{
+		id: "conflicted-copy-es",
+		risky: false,
+		label: () => t("conflictCopyEs"),
+		strip: (basename) => stripParenKeyword(basename, /copia en conflicto/i),
+	},
+	{
+		id: "conflicted-copy-pt",
+		risky: false,
+		label: () => t("conflictCopyPt"),
+		strip: (basename) => stripParenKeyword(basename, /c[oó]pia em conflito/i),
+	},
+	{
+		id: "official-sync-conflict",
+		risky: false,
+		label: () => t("officialSyncConflict"),
+		// Official Sync leftover: `Note (conflict 2026-08-31 1234)`
 		strip: (basename) => {
-			const m1 = basename.match(/^(.*?)\s*\([^)]*konfliktkopie[^)]*\)\s*$/i);
-			if (m1 && m1[1].trim().length > 0) return m1[1].trim();
-			const m2 = basename.match(/^(.*?)\s*\([^)]*in konflikt stehende kopie[^)]*\)\s*$/i);
-			if (m2 && m2[1].trim().length > 0) return m2[1].trim();
-			return null;
+			const m = basename.match(
+				/^(.*?)\s*[（(]\s*conflict\s+\d{4}[-./]\d{1,2}[-./]\d{1,2}[^）)]*[）)]\s*$/i
+			);
+			return m && m[1].trim().length > 0 ? m[1].trim() : null;
+		},
+	},
+	{
+		id: "nextcloud-conflict",
+		risky: false,
+		label: () => t("nextcloudConflict"),
+		strip: (basename) => {
+			const m = basename.match(/^(.*?)_conflict-\d{8}(?:-\d{6})?$/);
+			return m && m[1].trim().length > 0 ? m[1].trim() : null;
 		},
 	},
 	{
@@ -151,6 +195,14 @@ export function scanConflicts(settings: CopyGuardSettings, files: TFile[]): Scan
 					file: f,
 					reason: `${pattern.label()} → ${t("original")}: ${pair.name}`,
 					pairPath: pair.path,
+				});
+				break;
+			}
+			if (!pattern.risky) {
+				candidates.push({
+					type: "conflict",
+					file: f,
+					reason: `${pattern.label()} → ${t("noOriginal")}`,
 				});
 				break;
 			}

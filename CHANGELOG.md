@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.6
+
+- Detect official Sync leftovers (`Note (conflict 2026-08-31 1234)`)
+- Detect Dropbox names in Korean, Chinese, Spanish, and Portuguese
+- Detect Nextcloud `Note_conflict-YYYYMMDD-HHMMSS`
+- List name-pattern matches even when the original is missing from the same folder
+
+## 1.0.5
+
+- Detect Dropbox conflict copies that put the account name before `競合コピー` / `conflicted copy` (Japanese and English)
+
 ## 1.0.4
 
 - UI in 8 languages: Japanese, English, German, Korean, Simplified Chinese, Traditional Chinese (Taiwan), Spanish, Portuguese
