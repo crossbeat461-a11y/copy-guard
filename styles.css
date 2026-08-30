@@ -150,21 +150,30 @@
   font-size: var(--font-ui-small);
 }
 
-/* Official Buy Me a Coffee yellow (same as LP / default-yellow.png) */
-.copyguard-bmc-btn,
-button.copyguard-bmc-btn,
+/* Official Buy Me a Coffee yellow — override app button tokens, no !important */
+.copyguard-modal button.copyguard-bmc-btn,
+.copyguard-settings button.copyguard-bmc-btn,
 .setting-item-control button.copyguard-bmc-btn {
-  background-color: #ffdd00 !important;
-  color: #000 !important;
+  --interactive-normal: #ffdd00;
+  --interactive-hover: #f5d000;
+  --interactive-accent: #ffdd00;
+  --interactive-accent-hover: #f5d000;
+  --text-normal: #000;
+  --text-on-accent: #000;
+  --input-shadow: none;
+  --input-shadow-hover: none;
+  background-color: #ffdd00;
+  color: #000;
   font-weight: 700;
-  box-shadow: none !important;
-  border: none !important;
+  box-shadow: none;
+  border: none;
 }
 
-.copyguard-bmc-btn:hover,
-button.copyguard-bmc-btn:hover {
-  background-color: #f5d000 !important;
-  color: #000 !important;
+.copyguard-modal button.copyguard-bmc-btn:hover,
+.copyguard-settings button.copyguard-bmc-btn:hover,
+.setting-item-control button.copyguard-bmc-btn:hover {
+  background-color: #f5d000;
+  color: #000;
 }
 
 .copyguard-legal-bar {

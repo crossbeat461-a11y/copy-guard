@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Style the Buy Me a Coffee button with CSS variables and higher specificity (no `!important`)
+
 ## 1.0.6
 
 - Detect official Sync leftovers (`Note (conflict 2026-08-31 1234)`)
