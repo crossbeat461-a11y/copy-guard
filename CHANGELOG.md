@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.4
+
+- UI in 8 languages: Japanese, English, German, Korean, Simplified Chinese, Traditional Chinese (Taiwan), Spanish, Portuguese
+- Settings use tag-style section tabs (General / Scan / Delete / Info)
+- GitHub Issues link and banner for bug reports
+- Warning modal when enabling “Ask on startup” for quarantine delete
+
 ## 1.0.3
 
 - Community review warnings: drop `builtin-modules`, use `getLanguage()`, typed settings load, `createDiv`/`createSpan`, `FileManager.trashFile()`, settings search via `getSettingDefinitions()`, no floating Promise in the confirm click

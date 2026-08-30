@@ -1,3 +1,59 @@
+.copyguard-settings-nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35em;
+	margin: 0.5em 0 1em;
+}
+
+.copyguard-settings-tab {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 999px;
+	padding: 0.28em 0.85em;
+	cursor: pointer;
+	font-size: var(--font-ui-small);
+	background: var(--background-secondary);
+	color: var(--text-normal);
+	transition:
+		background-color 0.15s ease,
+		border-color 0.15s ease,
+		color 0.15s ease;
+}
+
+.copyguard-settings-tab:hover {
+	border-color: var(--interactive-accent-hover);
+}
+
+.copyguard-settings-tab.is-active {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border-color: var(--interactive-accent);
+	font-weight: var(--font-weight-semibold);
+}
+
+.copyguard-settings-panel {
+	margin-top: 0.25em;
+}
+
+.copyguard-issues-banner {
+	margin: 0 0 1em;
+	padding: 0.65em 0.75em;
+	border-radius: 8px;
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+}
+
+.copyguard-issues-banner-text {
+	margin: 0 0 0.5em;
+	color: var(--text-muted);
+	font-size: var(--font-ui-small);
+	line-height: 1.5;
+}
+
+.copyguard-issues-banner .setting-item {
+	border: none;
+	padding: 0;
+}
+
 .copyguard-modal {
   width: 100%;
 }

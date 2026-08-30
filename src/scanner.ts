@@ -24,12 +24,7 @@ const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "conflicted-copy-en",
 		risky: false,
-		label: () =>
-			t(
-				"conflicted copy（Dropbox / iCloud / Obsidian Sync）",
-				"conflicted copy (Dropbox / iCloud / Obsidian Sync)",
-				"conflicted copy (Dropbox / iCloud / Obsidian Sync)"
-			),
+		label: () => t("conflictedCopyEn"),
 		strip: (basename) => {
 			const m = basename.match(/^(.*?)\s*\(conflicted copy[^)]*\)\s*$/i);
 			return m && m[1].trim().length > 0 ? m[1].trim() : null;
@@ -38,7 +33,7 @@ const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "conflicted-copy-ja",
 		risky: false,
-		label: () => t("競合コピー（日本語）", "conflict copy (Japanese)", "Konfliktkopie (Japanisch)"),
+		label: () => t("conflictCopyJa"),
 		strip: (basename) => {
 			const m = basename.match(/^(.*?)[（(]\s*競合コピー[^）)]*[）)]\s*$/);
 			return m && m[1].trim().length > 0 ? m[1].trim() : null;
@@ -47,7 +42,7 @@ const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "conflicted-copy-de",
 		risky: false,
-		label: () => t("Konfliktkopie（ドイツ語）", "conflict copy (German)", "Konfliktkopie (Deutsch)"),
+		label: () => t("conflictCopyDe"),
 		strip: (basename) => {
 			const m1 = basename.match(/^(.*?)\s*\([^)]*konfliktkopie[^)]*\)\s*$/i);
 			if (m1 && m1[1].trim().length > 0) return m1[1].trim();
@@ -59,7 +54,7 @@ const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "sync-conflict",
 		risky: false,
-		label: () => t("sync-conflict（Syncthing）", "sync-conflict (Syncthing)", "sync-conflict (Syncthing)"),
+		label: () => t("syncConflict"),
 		strip: (basename) => {
 			const m = basename.match(/^(.*?)\.sync-conflict-\d{8}-\d{6}-[a-z0-9]+$/i);
 			return m && m[1].trim().length > 0 ? m[1].trim() : null;
@@ -68,12 +63,7 @@ const CONFLICT_PATTERNS: ConflictPattern[] = [
 	{
 		id: "numbered-duplicate",
 		risky: true,
-		label: () =>
-			t(
-				"番号付きの重複（iCloud / Windows）",
-				"numbered duplicate (iCloud / Windows)",
-				"nummeriertes Duplikat (iCloud / Windows)"
-			),
+		label: () => t("numberedDuplicate"),
 		strip: (basename) => {
 			const m1 = basename.match(/^(.*?)\s+\d+$/);
 			if (m1 && m1[1].trim().length > 0) return m1[1].trim();
@@ -159,7 +149,7 @@ export function scanConflicts(settings: CopyGuardSettings, files: TFile[]): Scan
 				candidates.push({
 					type: "conflict",
 					file: f,
-					reason: `${pattern.label()} → ${t("元", "original", "Original")}: ${pair.name}`,
+					reason: `${pattern.label()} → ${t("original")}: ${pair.name}`,
 					pairPath: pair.path,
 				});
 				break;
@@ -183,11 +173,7 @@ export function scanEmptyFiles(app: App, settings: CopyGuardSettings, files: TFi
 		.map((f) => ({
 			type: "empty" as const,
 			file: f,
-			reason: t(
-				`0バイト（更新から${formatAge(now - f.stat.mtime)}）`,
-				`0 bytes (modified ${formatAge(now - f.stat.mtime)} ago)`,
-				`0 Byte (geändert vor ${formatAge(now - f.stat.mtime)})`
-			),
+			reason: t("emptyFileReason", { age: formatAge(now - f.stat.mtime) }),
 		}));
 }
 
@@ -204,11 +190,7 @@ export function scanTempFiles(app: App, settings: CopyGuardSettings, files: TFil
 		.map((f) => ({
 			type: "temp" as const,
 			file: f,
-			reason: t(
-				`一時・破損ファイル（更新から${formatAge(now - f.stat.mtime)}）`,
-				`temp/corrupt file (modified ${formatAge(now - f.stat.mtime)} ago)`,
-				`temporäre/beschädigte Datei (geändert vor ${formatAge(now - f.stat.mtime)})`
-			),
+			reason: t("tempFileReason", { age: formatAge(now - f.stat.mtime) }),
 		}));
 }
 

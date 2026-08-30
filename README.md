@@ -24,7 +24,7 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 - Skips `.icloud` placeholders and files you currently have open
 - Moves selected files to **K-Tech Trash Box** (name is configurable)
 - On startup, if that folder has files, asks whether to delete. **Default is keep**
-- UI: Japanese / English / German from the app language (or the OS if the app follows the system)
+- UI: Japanese / English / German / Korean / Simplified Chinese / Traditional Chinese (Taiwan) / Spanish / Portuguese from the app language
 
 ### What it does not do
 
@@ -92,9 +92,7 @@ MIT
 
 ## Deutsch
 
-CopyGuard findet Konfliktkopien im selben Ordner, leere Dateien und temporäre Reste. Sie wählen, was nach **K-Tech Trash Box** verschoben wird. Löschen ist ein zweiter Schritt (Standard: behalten). Nutzung auf eigene Verantwortung.
-
-Die Oberfläche folgt der App-Sprache (Japanisch, Englisch, Deutsch).
+CopyGuard findet Konfliktkopien im selben Ordner, leere Dateien und temporäre Reste. UI: Japanisch, Englisch, Deutsch, Koreanisch, Chinesisch (vereinfacht / traditionell), Spanisch, Portugiesisch.
 
 Manuelle Installation: Dateien aus [Releases](https://github.com/crossbeat461-a11y/copy-guard/releases/latest) nach `<vault>/.obsidian/plugins/copy-guard/`.
 

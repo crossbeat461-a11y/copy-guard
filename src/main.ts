@@ -13,13 +13,13 @@ export default class CopyGuardPlugin extends Plugin {
 
 		this.addSettingTab(new CopyGuardSettingTab(this.app, this));
 
-		this.addRibbonIcon("copy", t("CopyGuardを開く", "Open CopyGuard", "CopyGuard öffnen"), () => {
+		this.addRibbonIcon("copy", t("openCopyGuard"), () => {
 			new ScanModal(this.app, this).open();
 		});
 
 		this.addCommand({
 			id: "open-scan",
-			name: t("CopyGuardを開く", "Open CopyGuard", "CopyGuard öffnen"),
+			name: t("openCopyGuard"),
 			callback: () => {
 				new ScanModal(this.app, this).open();
 			},
