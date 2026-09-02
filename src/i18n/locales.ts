@@ -177,7 +177,7 @@ const ja: Messages = {
 		"アプリの「削除したファイル」の設定に従います（システムゴミ箱 / .trash / 完全削除）。",
 	legalPrivacy: "免責とプライバシー",
 	supportHeading: "応援",
-	supportOptional: "開発の応援は任意です。",
+	supportOptional: "サポートお願いします。開発の励みになります。",
 	bmc: "Buy Me a Coffee",
 	enableStartupConfirmTitle: "起動時の削除確認を有効にしますか？",
 	enableStartupConfirmBody:
