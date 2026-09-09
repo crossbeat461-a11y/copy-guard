@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.1
+
+- Detect Proton Drive names: `(# Edit conflict …)` and `(# Name clash …)`, including several suffixes on one file
+- Detect official Sync files named `Note-conflict-YYYY-MM-DD` (optional time)
+- When the original is in the same folder, show if the copy has the same bytes
+
+### 日本語
+
+- Proton Drive の `(# Edit conflict …)` / `(# Name clash …)` を検出。同じファイルに複数付いていても元の名前まで戻す
+- 公式 Sync の `Note-conflict-YYYY-MM-DD`（時刻付きも）を検出
+- 同じフォルダに元があるとき、中身が同じなら一覧に出す
+
 ## 1.1.0
 
 - Style the Buy Me a Coffee button with CSS variables and higher specificity (no `!important`)

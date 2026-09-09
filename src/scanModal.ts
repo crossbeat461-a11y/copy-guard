@@ -3,7 +3,7 @@ import type CopyGuardPlugin from "./main";
 import { openBuyMeACoffee } from "./constants";
 import { t } from "./i18n";
 import { openLegalModal } from "./legal";
-import { moveToTrash, runScan, ScanCandidate } from "./scanner";
+import { annotateSameContent, moveToTrash, runScan, ScanCandidate } from "./scanner";
 
 function typeLabel(type: ScanCandidate["type"]): string {
 	if (type === "conflict") return t("typeConflict");
@@ -87,7 +87,9 @@ export class ScanModal extends Modal {
 			btn
 				.setButtonText(t("scanBtn"))
 				.setCta()
-				.onClick(() => this.runScanAndRender())
+				.onClick(() => {
+					void this.runScanAndRender();
+				})
 		);
 		scanRow.addButton((btn) => {
 			btn.setButtonText("☕ Buy Me a Coffee");
@@ -107,7 +109,9 @@ export class ScanModal extends Modal {
 				.setButtonText(t("moveToTrashBtn", { folder: this.plugin.settings.trashFolderName }))
 				.setCta()
 				.setDisabled(true)
-				.onClick(() => this.moveSelected());
+				.onClick(() => {
+					void this.moveSelected();
+				});
 			this.moveButtonComponent = btn;
 		});
 	}
@@ -128,13 +132,14 @@ export class ScanModal extends Modal {
 		this.moveButtonComponent?.setDisabled(this.selected.size === 0);
 	}
 
-	private runScanAndRender(): void {
+	private async runScanAndRender(): Promise<void> {
 		this.candidates = runScan(this.app, this.plugin.settings, {
 			includeConflict: this.optIncludeConflict,
 			includeEmpty: this.optIncludeEmpty,
 			includeTemp: this.optIncludeTemp,
 			includeNumberedDuplicates: this.optIncludeNumbered,
 		});
+		await annotateSameContent(this.app, this.candidates);
 		this.selected.clear();
 		this.renderResults();
 	}
@@ -152,6 +157,9 @@ export class ScanModal extends Modal {
 		for (const type of groups) {
 			const items = this.candidates.filter((c) => c.type === type);
 			if (items.length === 0) continue;
+			if (type === "conflict") {
+				items.sort((a, b) => Number(b.sameContent === true) - Number(a.sameContent === true));
+			}
 
 			this.resultsEl.createDiv({
 				cls: "copyguard-group-title",
@@ -177,10 +185,17 @@ export class ScanModal extends Modal {
 		});
 
 		const main = row.createDiv({ cls: "copyguard-item-main" });
-		main.createSpan({
+		const badges = main.createDiv({ cls: "copyguard-item-badges" });
+		badges.createSpan({
 			cls: `copyguard-badge ${TYPE_BADGE_CLASS[candidate.type]}`,
 			text: typeLabel(candidate.type),
 		});
+		if (candidate.sameContent === true) {
+			badges.createSpan({
+				cls: "copyguard-badge copyguard-badge-same",
+				text: t("sameAsOriginal"),
+			});
+		}
 		main.createDiv({ cls: "copyguard-item-path", text: candidate.file.path });
 		main.createDiv({ cls: "copyguard-item-reason", text: candidate.reason });
 	}

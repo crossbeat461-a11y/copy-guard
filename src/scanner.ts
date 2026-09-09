@@ -1,4 +1,8 @@
 import { App, normalizePath, TFile, TFolder } from "obsidian";
+import {
+	stripOfficialSyncHyphenConflict,
+	stripProtonDriveSuffixes,
+} from "./conflict-names";
 import { formatAge, t } from "./i18n";
 import type { CopyGuardSettings } from "./settings";
 
@@ -10,6 +14,8 @@ export interface ScanCandidate {
 	reason: string;
 	/** For conflicts, the vault-relative path of the original file it was matched against. */
 	pairPath?: string;
+	/** True when pairPath exists and both files have the same bytes. */
+	sameContent?: boolean;
 }
 
 interface ConflictPattern {
@@ -29,6 +35,18 @@ function stripParenKeyword(basename: string, keyword: RegExp): string | null {
 }
 
 const CONFLICT_PATTERNS: ConflictPattern[] = [
+	{
+		id: "proton-drive",
+		risky: false,
+		label: () => t("protonDriveConflict"),
+		strip: stripProtonDriveSuffixes,
+	},
+	{
+		id: "official-sync-hyphen",
+		risky: false,
+		label: () => t("officialSyncConflict"),
+		strip: stripOfficialSyncHyphenConflict,
+	},
 	{
 		id: "conflicted-copy-en",
 		risky: false,
@@ -211,6 +229,36 @@ export function scanConflicts(settings: CopyGuardSettings, files: TFile[]): Scan
 	return candidates;
 }
 
+function buffersEqual(a: ArrayBuffer, b: ArrayBuffer): boolean {
+	if (a.byteLength !== b.byteLength) return false;
+	const va = new Uint8Array(a);
+	const vb = new Uint8Array(b);
+	for (let i = 0; i < va.length; i++) {
+		if (va[i] !== vb[i]) return false;
+	}
+	return true;
+}
+
+/** When a conflict has an original in the same folder, mark whether the bytes match. */
+export async function annotateSameContent(app: App, candidates: ScanCandidate[]): Promise<void> {
+	for (const candidate of candidates) {
+		if (candidate.type !== "conflict" || !candidate.pairPath) continue;
+		const pair = app.vault.getAbstractFileByPath(candidate.pairPath);
+		if (!(pair instanceof TFile)) continue;
+		if (candidate.file.stat.size !== pair.stat.size) {
+			candidate.sameContent = false;
+			continue;
+		}
+		try {
+			const left = await app.vault.readBinary(candidate.file);
+			const right = await app.vault.readBinary(pair);
+			candidate.sameContent = buffersEqual(left, right);
+		} catch {
+			/* leave sameContent unset when a file cannot be read */
+		}
+	}
+}
+
 export function scanEmptyFiles(app: App, settings: CopyGuardSettings, files: TFile[]): ScanCandidate[] {
 	const now = Date.now();
 	const thresholdMs = settings.emptyMinAgeDays * 24 * 60 * 60 * 1000;
@@ -293,8 +341,7 @@ export async function moveToTrash(
 		try {
 			await app.fileManager.renameFile(file, dest);
 			moved++;
-		} catch (e) {
-			console.error("CopyGuard: failed to move", file.path, e);
+		} catch {
 			failed.push(file);
 		}
 	}
@@ -332,8 +379,8 @@ export async function emptyTrashFolder(app: App, trashFolderName: string): Promi
 		try {
 			await app.fileManager.trashFile(file);
 			deleted++;
-		} catch (e) {
-			console.error("CopyGuard: failed to delete", file.path, e);
+		} catch {
+			/* skip files the app cannot trash */
 		}
 	}
 	return deleted;

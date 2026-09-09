@@ -89,6 +89,8 @@ export type MessageKey =
 	| "nextcloudConflict"
 	| "syncConflict"
 	| "numberedDuplicate"
+	| "protonDriveConflict"
+	| "sameAsOriginal"
 	| "original"
 	| "noOriginal"
 	| "emptyFileReason"

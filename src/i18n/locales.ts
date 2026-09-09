@@ -8,7 +8,7 @@ const en: Messages = {
 	tabInfo: "Info",
 	settingsOverview: "How it works",
 	settingsOverviewDesc:
-		"Detection uses names and size only. Deletion is two steps. Set the quarantine folder here first.",
+		"Detection uses names, size, and a byte comparison when the original is in the same folder. Deletion is two steps. Set the quarantine folder here first.",
 	githubIssuesBanner:
 		"If something goes wrong, please report it on GitHub Issues (include your Obsidian version and steps to reproduce).",
 	githubIssues: "Report on GitHub Issues",
@@ -26,7 +26,7 @@ const en: Messages = {
 	conflictHeading: "Conflict copies",
 	enableConflict: "Detect conflict copies",
 	enableConflictDesc:
-		"Matches name patterns from Dropbox, official Sync, Syncthing, Nextcloud, and similar. Name matches are listed even if the original is missing.",
+		"Matches name patterns from Dropbox, official Sync, Proton Drive, Syncthing, Nextcloud, and similar. Name matches are listed even if the original is missing.",
 	includeNumberedDuplicates: "Include numbered duplicates",
 	includeNumberedDuplicatesDesc:
 		"Also treats names like “Note 2.md” or “Note(1).md” as copies. Easy to confuse with a title you chose, so this is off by default.",
@@ -103,6 +103,8 @@ const en: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "numbered duplicate (iCloud / Windows)",
+	protonDriveConflict: "conflict (Proton Drive)",
+	sameAsOriginal: "same content as original",
 	original: "original",
 	noOriginal: "no original in the same folder",
 	emptyFileReason: "0 bytes (modified {age} ago)",
@@ -113,7 +115,7 @@ const en: Messages = {
 	legalDisclaimer1:
 		"CopyGuard is provided as is, without warranty. It is not guaranteed to work in every environment. Use it at your own risk.",
 	legalDisclaimer2:
-		"Conflict copies, empty files, and temp files are judged from names and size. A real note can be listed by mistake. Always review the list yourself before moving or deleting.",
+		"Conflict copies, empty files, and temp files are judged from names, size, and (when an original is present) byte comparison. A real note can be listed by mistake. Always review the list yourself before moving or deleting.",
 	legalDisclaimer3:
 		"Moves into the quarantine folder, and later deletes, may not be undoable. If you sync (iCloud / Dropbox / Remotely Save, and similar), the same change can spread to other devices.",
 	legalDisclaimer4:
@@ -136,7 +138,7 @@ const ja: Messages = {
 	tabInfo: "情報",
 	settingsOverview: "概要",
 	settingsOverviewDesc:
-		"検出は名前と大きさだけで判定します。削除は2段階です。まずここで移動先の箱を決めてください。",
+		"検出は名前と大きさ、元があるときは中身が同じかも見ます。削除は2段階です。まずここで移動先の箱を決めてください。",
 	githubIssuesBanner:
 		"不具合や想定外の動作は GitHub Issues へ報告をお願いします（Obsidian の版と再現手順があると助かります）。",
 	githubIssues: "GitHub Issues で報告",
@@ -153,7 +155,7 @@ const ja: Messages = {
 	conflictHeading: "競合コピー",
 	enableConflict: "競合コピーを検出する",
 	enableConflictDesc:
-		"Dropbox・公式 Sync・Syncthing・Nextcloud などの名前の型に合わせます。同じフォルダに元がなくても、名前が型に合うものは候補に出します。",
+		"Dropbox・公式 Sync・Proton Drive・Syncthing・Nextcloud などの名前の型に合わせます。同じフォルダに元がなくても、名前が型に合うものは候補に出します。",
 	includeNumberedDuplicates: "番号付きの重複も含める",
 	includeNumberedDuplicatesDesc:
 		"「◯◯ 2.md」「◯◯(1).md」のような番号違いも対象にします。本人が付けた題と区別できないため、既定はオフです。",
@@ -229,6 +231,8 @@ const ja: Messages = {
 	nextcloudConflict: "conflict（Nextcloud）",
 	syncConflict: "sync-conflict（Syncthing）",
 	numberedDuplicate: "番号付きの重複（iCloud / Windows）",
+	protonDriveConflict: "conflict（Proton Drive）",
+	sameAsOriginal: "元ファイルと同じ内容",
 	original: "元",
 	noOriginal: "同じフォルダに元ファイルなし",
 	emptyFileReason: "0バイト（更新から{age}）",
@@ -239,7 +243,7 @@ const ja: Messages = {
 	legalDisclaimer1:
 		"CopyGuard は現状有姿（無保証）で提供します。あらゆる環境での動作を保証しません。ご利用は自己責任です。",
 	legalDisclaimer2:
-		"競合コピー・空ファイル・一時ファイルの判定は、ファイル名と大きさなどの手がかりによるものです。本番のノートを誤って候補に出すことがあります。移動や削除の前に、一覧を必ずご自身で確認してください。",
+		"競合コピー・空ファイル・一時ファイルの判定は、ファイル名と大きさ、元があるときは中身の比較によるものです。本番のノートを誤って候補に出すことがあります。移動や削除の前に、一覧を必ずご自身で確認してください。",
 	legalDisclaimer3:
 		"隔離フォルダへの移動や、その後の削除は取り消せないことがあります。同期（iCloud / Dropbox / Remotely Save など）を使っている場合、他の端末にも同じ変更が広がることがあります。",
 	legalDisclaimer4:
@@ -262,7 +266,7 @@ const de: Messages = {
 	tabInfo: "Info",
 	settingsOverview: "Hinweis",
 	settingsOverviewDesc:
-		"Die Erkennung nutzt nur Namen und Größe. Das Löschen erfolgt in zwei Schritten. Legen Sie hier zuerst den Quarantäneordner fest.",
+		"Die Erkennung nutzt Namen, Größe und bei vorhandenem Original einen Byte-Vergleich. Das Löschen erfolgt in zwei Schritten. Legen Sie hier zuerst den Quarantäneordner fest.",
 	githubIssuesBanner:
 		"Bei Problemen melden Sie sich bitte über GitHub Issues (Obsidian-Version und Schritte zur Reproduktion helfen).",
 	githubIssues: "Auf GitHub Issues melden",
@@ -280,7 +284,7 @@ const de: Messages = {
 	conflictHeading: "Konfliktkopien",
 	enableConflict: "Konfliktkopien erkennen",
 	enableConflictDesc:
-		"Passt zu Namensmustern von Dropbox, offiziellem Sync, Syncthing, Nextcloud u. a. Treffer auch ohne Original im Ordner.",
+		"Passt zu Namensmustern von Dropbox, offiziellem Sync, Proton Drive, Syncthing, Nextcloud u. a. Treffer auch ohne Original im Ordner.",
 	includeNumberedDuplicates: "Nummerierte Duplikate einbeziehen",
 	includeNumberedDuplicatesDesc:
 		"Behandelt auch Namen wie „Notiz 2.md“ oder „Notiz(1).md“. Standardmäßig aus.",
@@ -357,6 +361,8 @@ const de: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "nummeriertes Duplikat (iCloud / Windows)",
+	protonDriveConflict: "Konflikt (Proton Drive)",
+	sameAsOriginal: "gleicher Inhalt wie das Original",
 	original: "Original",
 	noOriginal: "kein Original im selben Ordner",
 	emptyFileReason: "0 Byte (geändert vor {age})",
@@ -367,7 +373,7 @@ const de: Messages = {
 	legalDisclaimer1:
 		"CopyGuard wird ohne Gewähr (wie besehen) bereitgestellt. Die Nutzung erfolgt auf eigene Verantwortung.",
 	legalDisclaimer2:
-		"Konfliktkopien, leere Dateien und temporäre Dateien werden anhand von Namen und Größe erkannt. Prüfen Sie die Liste selbst.",
+		"Konfliktkopien, leere Dateien und temporäre Dateien werden anhand von Namen, Größe und (bei Original) Byte-Vergleich erkannt. Prüfen Sie die Liste selbst.",
 	legalDisclaimer3:
 		"Verschieben in den Quarantäneordner und späteres Löschen sind oft nicht rückgängig zu machen. Bei Sync kann dieselbe Änderung auf andere Geräte gelangen.",
 	legalDisclaimer4:
@@ -390,7 +396,7 @@ const ko: Messages = {
 	tabInfo: "정보",
 	settingsOverview: "개요",
 	settingsOverviewDesc:
-		"이름과 크기만으로 판별합니다. 삭제는 2단계입니다. 먼저 격리 폴더를 정하세요.",
+		"이름·크기, 원본이 있으면 내용 일치도 봅니다. 삭제는 2단계입니다. 먼저 격리 폴더를 정하세요.",
 	githubIssuesBanner:
 		"문제가 있으면 GitHub Issues에 보고해 주세요(Obsidian 버전과 재현 절차를 포함하면 좋습니다).",
 	githubIssues: "GitHub Issues에 보고",
@@ -406,7 +412,7 @@ const ko: Messages = {
 	conflictHeading: "충돌 복사본",
 	enableConflict: "충돌 복사본 검색",
 	enableConflictDesc:
-		"Dropbox, 공식 Sync, Syncthing, Nextcloud 등의 이름 패턴. 원본이 없어도 목록에 냅니다.",
+		"Dropbox, 공식 Sync, Proton Drive, Syncthing, Nextcloud 등의 이름 패턴. 원본이 없어도 목록에 냅니다.",
 	includeNumberedDuplicates: "번호 중복 포함",
 	includeNumberedDuplicatesDesc: "「Note 2.md」 같은 이름도 포함. 기본값은 끔.",
 	emptyHeading: "빈 파일(0바이트)",
@@ -475,6 +481,8 @@ const ko: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "번호 중복(iCloud / Windows)",
+	protonDriveConflict: "충돌 (Proton Drive)",
+	sameAsOriginal: "원본과 같은 내용",
 	original: "원본",
 	noOriginal: "같은 폴더에 원본 없음",
 	emptyFileReason: "0바이트({age} 전 수정)",
@@ -483,7 +491,7 @@ const ko: Messages = {
 	ageHours: "{count}시간",
 	legalDisclaimerHeading: "면책(보증 없음)",
 	legalDisclaimer1: "CopyGuard는 있는 그대로 제공됩니다. 사용은 본인 책임입니다.",
-	legalDisclaimer2: "이름과 크기로만 판별합니다. 이동·삭제 전에 목록을 확인하세요.",
+	legalDisclaimer2: "이름과 크기, 원본이 있으면 내용 비교로 판별합니다. 이동·삭제 전에 목록을 확인하세요.",
 	legalDisclaimer3: "격리 폴더 이동·삭제는 되돌리기 어려울 수 있습니다. 동기화 시 다른 기기에도 전파됩니다.",
 	legalDisclaimer4: "K-Tech Studio는 데이터 손실 등에 대해 책임지지 않습니다. MIT 라이선스가 적용됩니다.",
 	legalDisclaimer5: "Obsidian, Dropbox, Apple 등의 공식 제품이 아닙니다.",
@@ -500,7 +508,7 @@ const zhCn: Messages = {
 	tabDelete: "删除",
 	tabInfo: "信息",
 	settingsOverview: "说明",
-	settingsOverviewDesc: "仅按名称和大小判断。删除分两步。请先设置隔离文件夹。",
+	settingsOverviewDesc: "按名称、大小判断，有原文件时再比较内容。删除分两步。请先设置隔离文件夹。",
 	githubIssuesBanner: "如遇问题，请在 GitHub Issues 报告（请附上 Obsidian 版本和重现步骤）。",
 	githubIssues: "在 GitHub Issues 报告",
 	githubIssuesDesc: "错误和异常行为请提交到 CopyGuard 的 GitHub Issues。",
@@ -514,7 +522,7 @@ const zhCn: Messages = {
 	excludeFoldersDesc: "逗号分隔。隔离文件夹始终排除。",
 	conflictHeading: "冲突副本",
 	enableConflict: "检测冲突副本",
-	enableConflictDesc: "匹配 Dropbox、官方 Sync、Syncthing、Nextcloud 等命名。无原文件也会列出。",
+	enableConflictDesc: "匹配 Dropbox、官方 Sync、Proton Drive、Syncthing、Nextcloud 等命名。无原文件也会列出。",
 	includeNumberedDuplicates: "包含编号重复",
 	includeNumberedDuplicatesDesc: "也匹配「Note 2.md」等。默认关闭。",
 	emptyHeading: "空文件（0 字节）",
@@ -583,6 +591,8 @@ const zhCn: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "编号重复 (iCloud / Windows)",
+	protonDriveConflict: "冲突 (Proton Drive)",
+	sameAsOriginal: "与原文件内容相同",
 	original: "原文件",
 	noOriginal: "同文件夹没有原文件",
 	emptyFileReason: "0 字节（{age}前修改）",
@@ -591,7 +601,7 @@ const zhCn: Messages = {
 	ageHours: "{count} 小时",
 	legalDisclaimerHeading: "免责声明（无担保）",
 	legalDisclaimer1: "CopyGuard 按原样提供，无担保。使用自负。",
-	legalDisclaimer2: "仅凭名称和大小判断。移动或删除前请自行核对列表。",
+	legalDisclaimer2: "凭名称、大小，以及有原文件时的内容比较判断。移动或删除前请自行核对列表。",
 	legalDisclaimer3: "移入隔离文件夹及后续删除可能无法撤销。同步会传播到其他设备。",
 	legalDisclaimer4: "K-Tech Studio 不对数据丢失等负责。适用 MIT 许可证。",
 	legalDisclaimer5: "非 Obsidian、Dropbox、Apple 等官方产品。",
@@ -608,7 +618,7 @@ const zhTw: Messages = {
 	tabDelete: "刪除",
 	tabInfo: "資訊",
 	settingsOverview: "說明",
-	settingsOverviewDesc: "僅依名稱和大小判斷。刪除分兩步。請先設定隔離資料夾。",
+	settingsOverviewDesc: "依名稱、大小判斷，有原檔時再比較內容。刪除分兩步。請先設定隔離資料夾。",
 	githubIssuesBanner: "若發生問題，請至 GitHub Issues 回報（請附上 Obsidian 版本與重現步驟）。",
 	githubIssues: "在 GitHub Issues 回報",
 	githubIssuesDesc: "錯誤與異常行為請提交至 CopyGuard 的 GitHub Issues。",
@@ -622,7 +632,7 @@ const zhTw: Messages = {
 	excludeFoldersDesc: "逗號分隔。隔離資料夾一律排除。",
 	conflictHeading: "衝突副本",
 	enableConflict: "偵測衝突副本",
-	enableConflictDesc: "符合 Dropbox、官方 Sync、Syncthing、Nextcloud 等命名。無原檔也會列出。",
+	enableConflictDesc: "符合 Dropbox、官方 Sync、Proton Drive、Syncthing、Nextcloud 等命名。無原檔也會列出。",
 	includeNumberedDuplicates: "包含編號重複",
 	includeNumberedDuplicatesDesc: "也匹配「Note 2.md」等。預設關閉。",
 	emptyHeading: "空檔案（0 位元組）",
@@ -691,6 +701,8 @@ const zhTw: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "編號重複 (iCloud / Windows)",
+	protonDriveConflict: "衝突 (Proton Drive)",
+	sameAsOriginal: "與原檔內容相同",
 	original: "原檔",
 	noOriginal: "同資料夾沒有原檔",
 	emptyFileReason: "0 位元組（{age}前修改）",
@@ -699,7 +711,7 @@ const zhTw: Messages = {
 	ageHours: "{count} 小時",
 	legalDisclaimerHeading: "免責（無擔保）",
 	legalDisclaimer1: "CopyGuard 依現狀提供，無擔保。使用自負。",
-	legalDisclaimer2: "僅依名稱和大小判斷。移動或刪除前請自行核對清單。",
+	legalDisclaimer2: "依名稱、大小，以及有原檔時的內容比較判斷。移動或刪除前請自行核對清單。",
 	legalDisclaimer3: "移入隔離資料夾及後續刪除可能無法復原。同步會傳播到其他裝置。",
 	legalDisclaimer4: "K-Tech Studio 不對資料遺失等負責。適用 MIT 授權。",
 	legalDisclaimer5: "非 Obsidian、Dropbox、Apple 等官方產品。",
@@ -717,7 +729,7 @@ const es: Messages = {
 	tabInfo: "Info",
 	settingsOverview: "Cómo funciona",
 	settingsOverviewDesc:
-		"La detección usa nombres y tamaño. La eliminación es en dos pasos. Configure primero la carpeta de cuarentena.",
+		"La detección usa nombres, tamaño y, si hay original, una comparación de contenido. La eliminación es en dos pasos. Configure primero la carpeta de cuarentena.",
 	githubIssuesBanner:
 		"Si hay problemas, repórtelos en GitHub Issues (incluya la versión de Obsidian y los pasos para reproducir).",
 	githubIssues: "Reportar en GitHub Issues",
@@ -733,7 +745,7 @@ const es: Messages = {
 	conflictHeading: "Copias en conflicto",
 	enableConflict: "Detectar copias en conflicto",
 	enableConflictDesc:
-		"Coincide con patrones de Dropbox, Sync oficial, Syncthing, Nextcloud y similares. También si falta el original.",
+		"Coincide con patrones de Dropbox, Sync oficial, Proton Drive, Syncthing, Nextcloud y similares. También si falta el original.",
 	includeNumberedDuplicates: "Incluir duplicados numerados",
 	includeNumberedDuplicatesDesc: "También nombres como “Nota 2.md”. Desactivado por defecto.",
 	emptyHeading: "Archivos vacíos (0 bytes)",
@@ -806,6 +818,8 @@ const es: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "duplicado numerado (iCloud / Windows)",
+	protonDriveConflict: "conflicto (Proton Drive)",
+	sameAsOriginal: "mismo contenido que el original",
 	original: "original",
 	noOriginal: "sin original en la misma carpeta",
 	emptyFileReason: "0 bytes (modificado hace {age})",
@@ -814,7 +828,7 @@ const es: Messages = {
 	ageHours: "{count} hora(s)",
 	legalDisclaimerHeading: "Aviso legal (sin garantía)",
 	legalDisclaimer1: "CopyGuard se proporciona tal cual, sin garantía. Uso bajo su responsabilidad.",
-	legalDisclaimer2: "Se juzga por nombres y tamaño. Revise la lista antes de mover o eliminar.",
+	legalDisclaimer2: "Se juzga por nombres, tamaño y, si hay original, el contenido. Revise la lista antes de mover o eliminar.",
 	legalDisclaimer3: "Mover a cuarentena y eliminar después puede ser irreversible. La sync se propaga.",
 	legalDisclaimer4: "K-Tech Studio no se responsabiliza por pérdida de datos. Aplica la licencia MIT.",
 	legalDisclaimer5: "No es un producto oficial de Obsidian, Dropbox, Apple u otros servicios de sync.",
@@ -832,7 +846,7 @@ const pt: Messages = {
 	tabInfo: "Info",
 	settingsOverview: "Como funciona",
 	settingsOverviewDesc:
-		"A detecção usa nomes e tamanho. A exclusão é em duas etapas. Defina primeiro a pasta de quarentena.",
+		"A detecção usa nomes, tamanho e, se houver original, uma comparação do conteúdo. A exclusão é em duas etapas. Defina primeiro a pasta de quarentena.",
 	githubIssuesBanner:
 		"Se algo der errado, reporte no GitHub Issues (inclua a versão do Obsidian e os passos para reproduzir).",
 	githubIssues: "Reportar no GitHub Issues",
@@ -848,7 +862,7 @@ const pt: Messages = {
 	conflictHeading: "Cópias em conflito",
 	enableConflict: "Detectar cópias em conflito",
 	enableConflictDesc:
-		"Corresponde a padrões de Dropbox, Sync oficial, Syncthing, Nextcloud e similares. Também se o original faltar.",
+		"Corresponde a padrões de Dropbox, Sync oficial, Proton Drive, Syncthing, Nextcloud e similares. Também se o original faltar.",
 	includeNumberedDuplicates: "Incluir duplicatas numeradas",
 	includeNumberedDuplicatesDesc: "Também nomes como “Nota 2.md”. Desligado por padrão.",
 	emptyHeading: "Arquivos vazios (0 bytes)",
@@ -921,6 +935,8 @@ const pt: Messages = {
 	nextcloudConflict: "conflict (Nextcloud)",
 	syncConflict: "sync-conflict (Syncthing)",
 	numberedDuplicate: "duplicata numerada (iCloud / Windows)",
+	protonDriveConflict: "conflito (Proton Drive)",
+	sameAsOriginal: "mesmo conteúdo que o original",
 	original: "original",
 	noOriginal: "sem original na mesma pasta",
 	emptyFileReason: "0 bytes (modificado há {age})",
@@ -929,7 +945,7 @@ const pt: Messages = {
 	ageHours: "{count} hora(s)",
 	legalDisclaimerHeading: "Aviso legal (sem garantia)",
 	legalDisclaimer1: "CopyGuard é fornecido como está, sem garantia. Uso por sua conta e risco.",
-	legalDisclaimer2: "Julga-se por nomes e tamanho. Revise a lista antes de mover ou excluir.",
+	legalDisclaimer2: "Julga-se por nomes, tamanho e, se houver original, o conteúdo. Revise a lista antes de mover ou excluir.",
 	legalDisclaimer3: "Mover para quarentena e excluir depois pode ser irreversível. A sync se propaga.",
 	legalDisclaimer4: "A K-Tech Studio não se responsabiliza por perda de dados. Aplica-se a licença MIT.",
 	legalDisclaimer5: "Não é produto oficial do Obsidian, Dropbox, Apple ou outros serviços de sync.",

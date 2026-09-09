@@ -1,11 +1,12 @@
 {
   "name": "copy-guard",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Find sync-conflict copies, empty files, and leftover temp files, review them, and move only what you approve into a dedicated trash folder before deleting.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "esbuild scripts/verify-conflict-names.ts --bundle --platform=node --format=esm --outfile=scripts/verify-run.mjs --packages=external && node scripts/verify-run.mjs"
   },
   "keywords": [],
   "author": "K-Tech Studio",
