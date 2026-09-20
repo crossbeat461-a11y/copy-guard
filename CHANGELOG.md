@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+- Scan: select every conflict copy that has the same bytes as the original in the same folder. Review the checks, then move. Still does not merge
+
+### 日本語
+
+- スキャン: 同じフォルダの元ファイルと中身が同じ競合コピーだけをまとめて選ぶ。確認してから移動する。マージはしない
+
 ## 1.1.1
 
 - Detect Proton Drive names: `(# Edit conflict …)` and `(# Name clash …)`, including several suffixes on one file

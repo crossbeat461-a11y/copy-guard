@@ -29,6 +29,7 @@ export class ScanModal extends Modal {
 
 	private resultsEl!: HTMLElement;
 	private footerInfoEl!: HTMLElement;
+	private selectSameButtonComponent!: { setDisabled: (v: boolean) => void };
 	private moveButtonComponent!: { setDisabled: (v: boolean) => void };
 
 	constructor(app: App, plugin: CopyGuardPlugin) {
@@ -104,16 +105,26 @@ export class ScanModal extends Modal {
 		this.footerInfoEl = footer.createDiv({ cls: "copyguard-footer-info" });
 		this.updateFooterInfo();
 
-		new Setting(footer).addButton((btn) => {
-			btn
-				.setButtonText(t("moveToTrashBtn", { folder: this.plugin.settings.trashFolderName }))
-				.setCta()
-				.setDisabled(true)
-				.onClick(() => {
-					void this.moveSelected();
-				});
-			this.moveButtonComponent = btn;
-		});
+		new Setting(footer)
+			.addButton((btn) => {
+				btn
+					.setButtonText(t("selectSameContentBtn"))
+					.setDisabled(true)
+					.onClick(() => {
+						this.selectSameContent();
+					});
+				this.selectSameButtonComponent = btn;
+			})
+			.addButton((btn) => {
+				btn
+					.setButtonText(t("moveToTrashBtn", { folder: this.plugin.settings.trashFolderName }))
+					.setCta()
+					.setDisabled(true)
+					.onClick(() => {
+						void this.moveSelected();
+					});
+				this.moveButtonComponent = btn;
+			});
 	}
 
 	onClose(): void {
@@ -125,11 +136,39 @@ export class ScanModal extends Modal {
 		this.resultsEl.createDiv({ cls: "copyguard-empty-state", text: message });
 	}
 
+	private sameContentCount(): number {
+		let n = 0;
+		for (let i = 0; i < this.candidates.length; i++) {
+			if (this.candidates[i].sameContent === true) {
+				n++;
+			}
+		}
+		return n;
+	}
+
 	private updateFooterInfo(): void {
 		this.footerInfoEl.setText(
 			t("selectedCount", { selected: this.selected.size, total: this.candidates.length })
 		);
+		this.selectSameButtonComponent?.setDisabled(this.sameContentCount() === 0);
 		this.moveButtonComponent?.setDisabled(this.selected.size === 0);
+	}
+
+	private selectSameContent(): void {
+		const paths: string[] = [];
+		for (let i = 0; i < this.candidates.length; i++) {
+			const candidate = this.candidates[i];
+			if (candidate.sameContent === true) {
+				paths.push(candidate.file.path);
+			}
+		}
+		if (paths.length === 0) {
+			new Notice(t("noSameContent"));
+			return;
+		}
+		this.selected = new Set(paths);
+		this.renderResults();
+		new Notice(t("selectedSameContent", { count: paths.length }));
 	}
 
 	private async runScanAndRender(): Promise<void> {

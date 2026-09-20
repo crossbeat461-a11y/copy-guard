@@ -23,7 +23,7 @@ CopyGuard is a maintenance plugin. It does not delete on its own.
 
 Scan for:
 - Sync conflict copies: Dropbox, official Sync (including Note-conflict-YYYY-MM-DD), Proton Drive (# Edit conflict / # Name clash), Syncthing, Nextcloud, and several languages. Listed even if the original is missing from the folder
-- When the original is in the same folder, a badge shows if the copy has the same bytes. CopyGuard does not merge
+- When the original is in the same folder, a badge shows matching bytes. Select identical copies checks only those; you still review. Does not merge
 - Empty (0-byte) files older than a number of days you set
 - Leftover temp files (.tmp, trailing ~, and similar)
 

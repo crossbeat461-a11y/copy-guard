@@ -20,6 +20,7 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 
 - Detects conflict copies (Dropbox / official Sync including `-conflict-` names / Proton Drive / Syncthing / Nextcloud; Japanese, English, German, Korean, Chinese, Spanish, Portuguese). Lists them even if the original is missing.
 - When the original is in the same folder, a badge shows if the copy has the same bytes (still does not merge)
+- After a scan, **Select identical copies** checks only those matching copies. You still review and move them yourself
 - Optional numbered names like `Note 2.md` (off by default — easy to confuse with a real title)
 - Empty (0-byte) files and temp leftovers (`.tmp`, trailing `~`, Office lock files), with a minimum age in days
 - Skips `.icloud` placeholders and files you currently have open
@@ -38,7 +39,7 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 1. Enable **CopyGuard**
 2. Click the ribbon icon (two overlapping pages) or run **Open CopyGuard**
 3. Check what to scan, then **Scan**
-4. Select rows and move them to the trash box
+4. Select rows and move them to the trash box. After Scan, **Select identical copies** checks only copies whose bytes match the original in the same folder
 5. Delete from that folder only when you mean to (startup prompt, default: later)
 
 ### Install (manual)
@@ -78,7 +79,7 @@ MIT
 1. CopyGuard を有効にする
 2. 左リボン（重なったページのアイコン）かコマンド「CopyGuardを開く」
 3. 項目にチェックしてスキャン
-4. 選んで **K-Tech Trash Box** へ移動
+4. 選んで **K-Tech Trash Box** へ移動。スキャン後の **同じ内容だけ選ぶ** は、同じフォルダの元と中身が一致するコピーだけにチェックを付ける
 5. 隔離フォルダの削除は、起動時の確認で本人が選ぶ
 
 手動インストールは [Releases](https://github.com/crossbeat461-a11y/copy-guard/releases/latest) の `main.js` / `manifest.json` / `styles.css` を `<vault>/.obsidian/plugins/copy-guard/` へ。
