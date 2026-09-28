@@ -1,11 +1,12 @@
 import { App, Modal, Notice, Setting } from "obsidian";
 import type CopyGuardPlugin from "./main";
 import { t } from "./i18n";
-import { emptyTrashFolder } from "./scanner";
+import { countTrashFiles, emptyTrashFolder, noticeRestoreResult, restoreFromTrash } from "./scanner";
 
 export class TrashConfirmModal extends Modal {
 	plugin: CopyGuardPlugin;
 	fileCount: number;
+	private countEl!: HTMLParagraphElement;
 
 	constructor(app: App, plugin: CopyGuardPlugin, fileCount: number) {
 		super(app);
@@ -18,7 +19,7 @@ export class TrashConfirmModal extends Modal {
 		contentEl.empty();
 
 		new Setting(contentEl).setName(t("deleteQuarantineHeading")).setHeading();
-		contentEl.createEl("p", {
+		this.countEl = contentEl.createEl("p", {
 			text: t("trashHasFiles", {
 				folder: this.plugin.settings.trashFolderName,
 				count: this.fileCount,
@@ -30,6 +31,13 @@ export class TrashConfirmModal extends Modal {
 		});
 
 		const buttonRow = contentEl.createDiv({ cls: "copyguard-footer" });
+
+		const restoreBtn = buttonRow.createEl("button", {
+			text: t("restoreFromTrashBtn"),
+		});
+		restoreBtn.addEventListener("click", () => {
+			void this.confirmRestore();
+		});
 
 		const laterBtn = buttonRow.createEl("button", {
 			text: t("laterKeep"),
@@ -43,6 +51,23 @@ export class TrashConfirmModal extends Modal {
 		deleteBtn.addEventListener("click", () => {
 			void this.confirmDelete();
 		});
+	}
+
+	private async confirmRestore(): Promise<void> {
+		const result = await restoreFromTrash(this.app, this.plugin.settings.trashFolderName);
+		noticeRestoreResult(result);
+		const remaining = countTrashFiles(this.app, this.plugin.settings.trashFolderName);
+		this.fileCount = remaining;
+		if (remaining === 0) {
+			this.close();
+			return;
+		}
+		this.countEl.setText(
+			t("trashHasFiles", {
+				folder: this.plugin.settings.trashFolderName,
+				count: remaining,
+			})
+		);
 	}
 
 	private async confirmDelete(): Promise<void> {

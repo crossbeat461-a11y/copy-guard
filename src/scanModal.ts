@@ -3,7 +3,16 @@ import type CopyGuardPlugin from "./main";
 import { openBuyMeACoffee } from "./constants";
 import { t } from "./i18n";
 import { openLegalModal } from "./legal";
-import { annotateSameContent, moveToTrash, runScan, ScanCandidate } from "./scanner";
+import { CompareModal } from "./compareModal";
+import {
+	annotateSameContent,
+	countTrashFiles,
+	moveToTrash,
+	noticeRestoreResult,
+	restoreFromTrash,
+	runScan,
+	ScanCandidate,
+} from "./scanner";
 
 function typeLabel(type: ScanCandidate["type"]): string {
 	if (type === "conflict") return t("typeConflict");
@@ -114,6 +123,11 @@ export class ScanModal extends Modal {
 						this.selectSameContent();
 					});
 				this.selectSameButtonComponent = btn;
+			})
+			.addButton((btn) => {
+				btn.setButtonText(t("restoreFromTrashBtn")).onClick(() => {
+					void this.restoreFromTrashBox();
+				});
 			})
 			.addButton((btn) => {
 				btn
@@ -232,11 +246,22 @@ export class ScanModal extends Modal {
 		if (candidate.sameContent === true) {
 			badges.createSpan({
 				cls: "copyguard-badge copyguard-badge-same",
-				text: t("sameAsOriginal"),
+				text: t("nameOnly"),
 			});
 		}
 		main.createDiv({ cls: "copyguard-item-path", text: candidate.file.path });
 		main.createDiv({ cls: "copyguard-item-reason", text: candidate.reason });
+		if (candidate.pairPath) {
+			const actions = row.createDiv({ cls: "copyguard-item-actions" });
+			const compareBtn = actions.createEl("button", {
+				text: t("compareBtn"),
+				cls: "copyguard-compare-btn",
+			});
+			compareBtn.addEventListener("click", (event) => {
+				event.preventDefault();
+				new CompareModal(this.app, candidate).open();
+			});
+		}
 	}
 
 	private async moveSelected(): Promise<void> {
@@ -244,7 +269,7 @@ export class ScanModal extends Modal {
 		if (targets.length === 0) return;
 
 		const folder = this.plugin.settings.trashFolderName;
-		const { moved, failed } = await moveToTrash(this.app, folder, targets);
+		const { moved, failed, indexSaved } = await moveToTrash(this.app, folder, targets);
 
 		this.candidates = this.candidates.filter((c) => !this.selected.has(c.file.path) || failed.includes(c.file));
 		this.selected.clear();
@@ -256,5 +281,17 @@ export class ScanModal extends Modal {
 		if (failed.length > 0) {
 			new Notice(t("moveFailed", { count: failed.length }));
 		}
+		if (!indexSaved) {
+			new Notice(t("indexSaveFailed"));
+		}
+	}
+
+	private async restoreFromTrashBox(): Promise<void> {
+		if (countTrashFiles(this.app, this.plugin.settings.trashFolderName) === 0) {
+			new Notice(t("restoreEmpty"));
+			return;
+		}
+		const result = await restoreFromTrash(this.app, this.plugin.settings.trashFolderName);
+		noticeRestoreResult(result);
 	}
 }

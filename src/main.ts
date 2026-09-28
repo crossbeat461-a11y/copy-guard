@@ -1,7 +1,7 @@
 import { Plugin } from "obsidian";
 import { t } from "./i18n";
 import { CopyGuardSettings, CopyGuardSettingTab, DEFAULT_SETTINGS, parseSavedSettings } from "./settings";
-import { countTrashFiles } from "./scanner";
+import { countTrashFiles, noticeRestoreResult, restoreFromTrash } from "./scanner";
 import { ScanModal } from "./scanModal";
 import { TrashConfirmModal } from "./startupModal";
 
@@ -25,6 +25,14 @@ export default class CopyGuardPlugin extends Plugin {
 			},
 		});
 
+		this.addCommand({
+			id: "restore-from-trash",
+			name: t("restoreFromTrash"),
+			callback: () => {
+				void this.restoreFromTrashBox();
+			},
+		});
+
 		this.app.workspace.onLayoutReady(() => {
 			this.maybeShowTrashConfirm();
 		});
@@ -40,6 +48,11 @@ export default class CopyGuardPlugin extends Plugin {
 		if (count > 0) {
 			new TrashConfirmModal(this.app, this, count).open();
 		}
+	}
+
+	private async restoreFromTrashBox(): Promise<void> {
+		const result = await restoreFromTrash(this.app, this.settings.trashFolderName);
+		noticeRestoreResult(result);
 	}
 
 	async loadSettings(): Promise<void> {

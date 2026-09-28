@@ -18,3 +18,4 @@ data.json
 .vscode
 .vercel
 scripts/verify-run.mjs
+scripts/verify-trash-index.mjs

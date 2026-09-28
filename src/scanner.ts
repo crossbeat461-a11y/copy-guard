@@ -1,10 +1,16 @@
-import { App, normalizePath, TFile, TFolder } from "obsidian";
+import { App, Notice, normalizePath, TFile, TFolder } from "obsidian";
 import {
 	stripOfficialSyncHyphenConflict,
 	stripProtonDriveSuffixes,
 } from "./conflict-names";
 import { formatAge, t } from "./i18n";
 import type { CopyGuardSettings } from "./settings";
+import {
+	isTrashIndexPath,
+	loadTrashIndex,
+	saveTrashIndex,
+	trashIndexPath,
+} from "./trashIndex";
 
 export type CandidateType = "conflict" | "empty" | "temp";
 
@@ -314,12 +320,28 @@ export function runScan(app: App, settings: CopyGuardSettings, options: RunScanO
 	return results;
 }
 
+async function ensureFolder(app: App, folderPath: string): Promise<void> {
+	const normalized = normalizeFolder(folderPath);
+	if (normalized === "" || normalized === "." || normalized === "/") return;
+	const parts = normalized.split("/");
+	let acc = "";
+	for (const part of parts) {
+		acc = acc ? `${acc}/${part}` : part;
+		const existing = app.vault.getAbstractFileByPath(acc);
+		if (existing instanceof TFolder) continue;
+		if (existing) {
+			throw new Error(`Cannot create folder; a file occupies ${acc}`);
+		}
+		await app.vault.createFolder(acc);
+	}
+}
+
 /** Ensures the trash folder exists and moves the given files into it, avoiding name collisions. */
 export async function moveToTrash(
 	app: App,
 	trashFolderName: string,
 	files: TFile[]
-): Promise<{ moved: number; failed: TFile[] }> {
+): Promise<{ moved: number; failed: TFile[]; indexSaved: boolean }> {
 	const trashPath = normalizeFolder(trashFolderName);
 	const existing = app.vault.getAbstractFileByPath(trashPath);
 	if (!existing) {
@@ -328,8 +350,11 @@ export async function moveToTrash(
 
 	let moved = 0;
 	const failed: TFile[] = [];
+	const index = await loadTrashIndex(app, trashFolderName);
 
 	for (const file of files) {
+		if (isTrashIndexPath(file.path, trashFolderName)) continue;
+		const originalPath = file.path;
 		let destName = file.name;
 		let dest = normalizePath(`${trashPath}/${destName}`);
 		let counter = 1;
@@ -340,13 +365,21 @@ export async function moveToTrash(
 		}
 		try {
 			await app.fileManager.renameFile(file, dest);
+			index.set(dest, originalPath);
 			moved++;
 		} catch {
 			failed.push(file);
 		}
 	}
 
-	return { moved, failed };
+	let indexSaved = true;
+	try {
+		await saveTrashIndex(app, trashFolderName, index);
+	} catch {
+		indexSaved = false;
+	}
+
+	return { moved, failed, indexSaved };
 }
 
 function collectFilesRecursive(folder: TFolder, out: TFile[]): void {
@@ -361,19 +394,22 @@ export function getTrashFolder(app: App, trashFolderName: string): TFolder | nul
 	return abstract instanceof TFolder ? abstract : null;
 }
 
-export function countTrashFiles(app: App, trashFolderName: string): number {
+function collectUserTrashFiles(app: App, trashFolderName: string): TFile[] {
 	const folder = getTrashFolder(app, trashFolderName);
-	if (!folder) return 0;
+	if (!folder) return [];
 	const files: TFile[] = [];
 	collectFilesRecursive(folder, files);
-	return files.length;
+	return files.filter((file) => !isTrashIndexPath(file.path, trashFolderName));
+}
+
+export function countTrashFiles(app: App, trashFolderName: string): number {
+	return collectUserTrashFiles(app, trashFolderName).length;
 }
 
 export async function emptyTrashFolder(app: App, trashFolderName: string): Promise<number> {
 	const folder = getTrashFolder(app, trashFolderName);
 	if (!folder) return 0;
-	const files: TFile[] = [];
-	collectFilesRecursive(folder, files);
+	const files = collectUserTrashFiles(app, trashFolderName);
 	let deleted = 0;
 	for (const file of files) {
 		try {
@@ -383,5 +419,87 @@ export async function emptyTrashFolder(app: App, trashFolderName: string): Promi
 			/* skip files the app cannot trash */
 		}
 	}
+	const indexFile = app.vault.getAbstractFileByPath(trashIndexPath(trashFolderName));
+	if (indexFile instanceof TFile) {
+		try {
+			await app.fileManager.trashFile(indexFile);
+		} catch {
+			/* index is removed last; a leftover index is not user data */
+		}
+	}
 	return deleted;
+}
+
+export interface RestoreResult {
+	restored: number;
+	occupied: number;
+	failed: number;
+	unindexed: number;
+	empty: boolean;
+}
+
+export async function restoreFromTrash(app: App, trashFolderName: string): Promise<RestoreResult> {
+	const userFiles = collectUserTrashFiles(app, trashFolderName);
+	if (userFiles.length === 0) {
+		return { restored: 0, occupied: 0, failed: 0, unindexed: 0, empty: true };
+	}
+
+	const index = await loadTrashIndex(app, trashFolderName);
+	const remaining = new Map(index);
+	const result: RestoreResult = {
+		restored: 0,
+		occupied: 0,
+		failed: 0,
+		unindexed: 0,
+		empty: false,
+	};
+
+	for (const file of userFiles) {
+		if (!index.has(file.path)) result.unindexed++;
+	}
+
+	for (const [trashPath, originalPath] of index) {
+		const file = app.vault.getAbstractFileByPath(trashPath);
+		if (!(file instanceof TFile)) {
+			remaining.delete(trashPath);
+			continue;
+		}
+		const occupied = app.vault.getAbstractFileByPath(originalPath);
+		if (occupied) {
+			result.occupied++;
+			continue;
+		}
+		const slash = originalPath.lastIndexOf("/");
+		const parent = slash >= 0 ? originalPath.slice(0, slash) : "";
+		try {
+			if (parent) await ensureFolder(app, parent);
+			await app.fileManager.renameFile(file, originalPath);
+			remaining.delete(trashPath);
+			result.restored++;
+		} catch {
+			result.failed++;
+		}
+	}
+
+	try {
+		await saveTrashIndex(app, trashFolderName, remaining);
+	} catch {
+		/* occupied / failed entries stay in the live map; next load may miss them */
+	}
+
+	return result;
+}
+
+export function noticeRestoreResult(result: RestoreResult): void {
+	if (result.empty) {
+		new Notice(t("restoreEmpty"));
+		return;
+	}
+	if (result.restored > 0) new Notice(t("restoredCount", { count: result.restored }));
+	if (result.occupied > 0) new Notice(t("restoreOccupied", { count: result.occupied }));
+	if (result.failed > 0) new Notice(t("restoreFailed", { count: result.failed }));
+	if (result.unindexed > 0) new Notice(t("restoreUnindexed", { count: result.unindexed }));
+	if (result.restored === 0 && result.occupied === 0 && result.failed === 0 && result.unindexed === 0) {
+		new Notice(t("restoreNothing"));
+	}
 }

@@ -19,8 +19,9 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 ### What it does
 
 - Detects conflict copies (Dropbox / official Sync including `-conflict-` names / Proton Drive / Syncthing / Nextcloud; Japanese, English, German, Korean, Chinese, Spanish, Portuguese). Lists them even if the original is missing.
-- When the original is in the same folder, a badge shows if the copy has the same bytes (still does not merge)
-- After a scan, **Select identical copies** checks only those matching copies. You still review and move them yourself
+- When the original is in the same folder, a badge shows if the copy has the same bytes (name only). Still does not merge
+- After a scan, **Select identical copies** checks only those matching copies. You still review and move them yourself. **Compare** opens the original and the copy
+- Restore indexed files from **K-Tech Trash Box** to the original path. If something already occupies that path, restore fails for that file (no overwrite). Files moved before 1.3.0 have no index and cannot be restored to the original path
 - Optional numbered names like `Note 2.md` (off by default — easy to confuse with a real title)
 - Empty (0-byte) files and temp leftovers (`.tmp`, trailing `~`, Office lock files), with a minimum age in days
 - Skips `.icloud` placeholders and files you currently have open
@@ -39,8 +40,9 @@ K-Tech Studio plugin that finds **sync-conflict copies**, empty files, and lefto
 1. Enable **CopyGuard**
 2. Click the ribbon icon (two overlapping pages) or run **Open CopyGuard**
 3. Check what to scan, then **Scan**
-4. Select rows and move them to the trash box. After Scan, **Select identical copies** checks only copies whose bytes match the original in the same folder
-5. Delete from that folder only when you mean to (startup prompt, default: later)
+4. Select rows and move them to the trash box. After Scan, **Select identical copies** checks only copies whose bytes match the original in the same folder. Use **Compare** when you want to see original vs copy
+5. Restore from the trash box to the original path when you need to (command, scan window, or the startup prompt)
+6. Delete from that folder only when you mean to (startup prompt, default: later)
 
 ### Install (manual)
 
@@ -79,8 +81,9 @@ MIT
 1. CopyGuard を有効にする
 2. 左リボン（重なったページのアイコン）かコマンド「CopyGuardを開く」
 3. 項目にチェックしてスキャン
-4. 選んで **K-Tech Trash Box** へ移動。スキャン後の **同じ内容だけ選ぶ** は、同じフォルダの元と中身が一致するコピーだけにチェックを付ける
-5. 隔離フォルダの削除は、起動時の確認で本人が選ぶ
+4. 選んで **K-Tech Trash Box** へ移動。スキャン後の **同じ内容だけ選ぶ** は、同じフォルダの元と中身が一致するコピーだけにチェックを付ける。**確認** で元とコピーを見比べる
+5. 隔離フォルダから元の場所へ戻すときは、コマンド、スキャン画面、または起動時の確認から
+6. 隔離フォルダの削除は、起動時の確認で本人が選ぶ
 
 手動インストールは [Releases](https://github.com/crossbeat461-a11y/copy-guard/releases/latest) の `main.js` / `manifest.json` / `styles.css` を `<vault>/.obsidian/plugins/copy-guard/` へ。
 
@@ -94,7 +97,7 @@ MIT
 
 ## Deutsch
 
-CopyGuard findet Konfliktkopien im selben Ordner, leere Dateien und temporäre Reste. UI: Japanisch, Englisch, Deutsch, Koreanisch, Chinesisch (vereinfacht / traditionell), Spanisch, Portugiesisch.
+CopyGuard findet Konfliktkopien im selben Ordner, leere Dateien und temporäre Reste. Vergleich mit dem Original (nur Name, wenn der Inhalt gleich ist). Wiederherstellung aus der Trash Box zum Originalpfad. UI: Japanisch, Englisch, Deutsch, Koreanisch, Chinesisch (vereinfacht / traditionell), Spanisch, Portugiesisch.
 
 Manuelle Installation: Dateien aus [Releases](https://github.com/crossbeat461-a11y/copy-guard/releases/latest) nach `<vault>/.obsidian/plugins/copy-guard/`.
 

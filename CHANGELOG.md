@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+- Scan: compare each row with the original. Matching bytes show as name-only. Still does not merge
+- Restore indexed files from the Trash Box to the original path. Occupied paths fail without overwrite. Files quarantined before 1.3.0 cannot be restored to the original path
+- Stronger caution for numbered duplicates (still off by default)
+
+### 日本語
+
+- スキャン: 元がある行は確認できる。中身が同じなら「名前だけ」。マージはしない
+- Trash Box から、索引のあるファイルを元の場所へ戻す。元の場所が埋まっていれば上書きしない。1.3.0より前の隔離は元の場所へ戻せない
+- 番号付き重複の注意を強めた（既定はオフのまま）
+
 ## 1.2.0
 
 - Scan: select every conflict copy that has the same bytes as the original in the same folder. Review the checks, then move. Still does not merge
